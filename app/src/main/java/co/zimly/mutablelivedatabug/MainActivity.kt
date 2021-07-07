@@ -29,15 +29,17 @@ class MainActivity : ComponentActivity() {
 }
 
 object MyModel : ViewModel() {
+    // The bug is triggered by the line below
     val content = MutableLiveData<@Composable () -> Unit>({ Text("Hello!") })
 }
 
 @Composable
 fun Greeting(name: String) {
+    // The bug still occurs if the next two lines are commented out
     val content by MyModel.content.observeAsState({})
+    content()
 
     Text(text = "Hello $name!")
-    content()
 }
 
 @Preview(showBackground = true)
